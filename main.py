@@ -18,9 +18,10 @@ if answer.status_code == 200:
     soup = BeautifulSoup(html, 'html.parser')
     atualizacoes = soup.find_all('tr')
     atualizacoes = [i.text for i in atualizacoes]
+    ultima_att_site = atualizacoes[1].split('\n')[2]
     
     print(f'Atualizações:\n{atualizacoes}\n')
-    print(f'Ultima att no site: {atualizacoes[1].split('\n')[2]}\n')
+    print(f'Ultima att no site: {ultima_att_site}\n')
 
     # verifica se não alteraram algum item no site
     if atualizacoes[1].split('\n')[1] == "Dados atualizados pela última vez":
@@ -61,7 +62,6 @@ if answer.status_code == 200:
 
     else:
         raise ValueError('Mudou alguma coisa no site.')
-    
 
 else:
     print(answer.status_code)
