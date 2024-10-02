@@ -26,7 +26,9 @@ def navegador_firefox(headless, geckodriver_version='v0.35.0') -> any:
     firefox_binary_path = '/usr/bin/firefox'
     
     # checa versão do seu firefox
-    firefox_version_output = subprocess.check_output('firefox --version', shell=True, stderr=subprocess.STDOUT).decode().strip()
+    firefox_version_output = subprocess.check_output('firefox --version',
+                                                     shell=True,
+                                                     stderr=subprocess.STDOUT).decode().strip()
     firefox_version = firefox_version_output.split(' ')[-1]  # pega a versão do firefox
     print(f'Você está usando o Firefox versão: {firefox_version}\n')
     

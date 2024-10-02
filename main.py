@@ -2,6 +2,9 @@ import requests
 from bs4 import BeautifulSoup
 import urllib3
 import json
+import os
+import shutil
+from datetime import datetime
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -53,6 +56,23 @@ if answer.status_code == 200:
                 with open('./downloads/sepiesp_captados.csv', 'wb') as f:
                     f.write(s.get(url_download).content)
                     print('\nArquivo salvo com sucesso!\nNa pasta: ./downloads/sepiesp_captados.csv\n')
+
+                print(f"Salvando backup do arquivo em /ADLS_Raw_datalakesenai/Dados_Externos/Seade/")
+
+                today_date = datetime.today().date()
+
+                source = '../downloads/'
+                destination = '/dbfs/mnt/ADLS_raw_datalakesenai/Dados_Externos/Seade/'
+
+                file_name = os.listdir(source)[0]
+
+                # cria a pasta, caso nao exista
+                os.makedirs(destination, exist_ok=True)
+
+                # verifica se o arquivo é valido e copia pra raw com a data
+                if os.path.isfile(source + file_name):
+                    shutil.copy(source + file_name, destination + str(today_date) + "_" + file_name)
+                    print(f"Backup salvo: {destination + str(today_date) + "_" + file_name}")
 
             except Exception as e: 
                 raise (e)
